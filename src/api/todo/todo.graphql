@@ -1,0 +1,17 @@
+type Todo {
+  id: ID!
+  name: String!
+}
+
+input NewTodoInput {
+  name: String!
+}
+
+type Query {
+  todo(id: ID!): Todo!
+  todos: [Todo!]
+}
+
+type Mutation {
+  newTodo(input: NewTodoInput!): Todo!
+}
