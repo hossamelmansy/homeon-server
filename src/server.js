@@ -1,5 +1,7 @@
 const { ApolloServer, gql } = require('apollo-server');
 
+require('./db')();
+
 // The GraphQL schema
 const typeDefs = gql`
   type Query {
@@ -19,7 +21,9 @@ const resolvers = {
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  tracing: true,
+  debug: true
 });
 
 server.listen().then(function({ url }) {
