@@ -1,26 +1,6 @@
-function todo(_, args, ctx) {
-  var { id } = args;
+const { UserInputError } = require('apollo-server');
 
-  if (!id) {
-    throw new Error('Invalid input');
-  }
-
-  return ctx.models.todo.findById(id);
-}
-
-function todos(_, args, ctx) {
-  return ctx.models.todo.find({});
-}
-
-function newTodo(_, args, ctx) {
-  return ctx.models.todo.create(args.input);
-}
-
-var todoResolvers = {
-  id(todo) {
-    return String(todo._id);
-  }
-};
+const { isValidId } = require('../../utils');
 
 module.exports = {
   Query: {
@@ -31,6 +11,33 @@ module.exports = {
     newTodo
   },
   Todo: {
-    ...todoResolvers
+    id(todo) {
+      return String(todo._id);
+    }
   }
 };
+
+// ###########################
+
+function todo(_, args, ctx) {
+  var { id } = args;
+  var {
+    models: { todo: Todo }
+  } = ctx;
+
+  if (!isValidId(id)) {
+    throw new UserInputError('Invalid Form Arguments', {
+      invalidArgs: Object.keys(args)
+    });
+  }
+
+  return Todo.findById(id).exec();
+}
+
+function todos(_, args, ctx) {
+  return ctx.models.todo.find({}).exec();
+}
+
+function newTodo(_, args, ctx) {
+  return ctx.models.todo.create(args.input);
+}

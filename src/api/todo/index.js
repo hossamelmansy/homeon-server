@@ -1,5 +1,5 @@
 module.exports = {
   resolvers: require('./todo.resolvers'),
-  typeDefs: require('../../utils/gqlLoader')('todo/todo.graphql'),
+  typeDefs: require('../../utils').loadGQLfile('todo/todo.graphql'),
   model: require('./todo.model')
 };

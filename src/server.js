@@ -1,13 +1,14 @@
+require('dotenv').config();
 const { ApolloServer } = require('apollo-server');
 
 const gqlServerConfig = require('./api');
-
 require('./db')();
 
 const server = new ApolloServer({
   ...gqlServerConfig,
-  tracing: true,
-  debug: true
+  formatError: require('./utils').formatError,
+  tracing: process.env.NODE_ENV == 'production' ? false : true,
+  debug: process.env.NODE_ENV == 'production' ? false : true
 });
 
 server.listen().then(function({ url }) {
