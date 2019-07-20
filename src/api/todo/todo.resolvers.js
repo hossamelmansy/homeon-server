@@ -1,6 +1,4 @@
-const { UserInputError } = require("apollo-server");
-
-const { isValidId } = require("../../utils");
+const { isValidId } = require("../../utils/validator");
 
 module.exports = {
   Query: {
@@ -9,15 +7,10 @@ module.exports = {
   },
   Mutation: {
     newTodo
-  },
-  Todo: {
-    id(todo) {
-      return String(todo._id);
-    }
   }
 };
 
-// #################################
+// ########################################################################
 
 function todo(_, args, ctx) {
   var { id } = args;
@@ -25,19 +18,23 @@ function todo(_, args, ctx) {
     models: { todo: Todo }
   } = ctx;
 
-  if (!isValidId(id)) {
-    throw new UserInputError("Invalid Form Arguments", {
-      invalidArgs: Object.keys(args)
-    });
-  }
+  isValidId(id, { error: true });
 
   return Todo.findById(id).exec();
 }
 
 function todos(_, args, ctx) {
-  return ctx.models.todo.find({}).exec();
+  var {
+    models: { todo: Todo }
+  } = ctx;
+
+  return Todo.find({}).exec();
 }
 
-function newTodo(_, args, ctx) {
-  return ctx.models.todo.create(args.input);
+async function newTodo(_, args, ctx) {
+  var {
+    models: { todo: Todo }
+  } = ctx;
+
+  return Todo.create({ ...args.input, dueDate: new Date(args.input.dueDate) });
 }

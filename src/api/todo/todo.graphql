@@ -1,10 +1,31 @@
+enum Priority {
+  NO
+  HIGH
+  MEDIUM
+  LOW
+}
+
 type Todo {
   id: ID!
-  name: String!
+  text: String!
+  note: String
+  tags: [String!]
+  priority: Priority
+  dueDate: Date
+  owner: User!
+  list: List!
+  createdAt: Date
+  updatedAt: Date
 }
 
 input NewTodoInput {
-  name: String!
+  text: String!
+  note: String
+  tags: [String!]
+  priority: Priority = NO
+  dueDate: Int
+  owner: ID!
+  list: ID!
 }
 
 type Query {
