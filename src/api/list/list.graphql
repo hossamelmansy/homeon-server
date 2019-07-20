@@ -1,0 +1,18 @@
+type List {
+  name: String!
+  owner: User!
+  createdAt: Date
+  updatedAt: Date
+}
+
+input NewListInput {
+  name: String!
+}
+
+extend type Query {
+  lists: [List!]
+}
+
+extend type Mutation {
+  newList(input: NewListInput!): List!
+}
