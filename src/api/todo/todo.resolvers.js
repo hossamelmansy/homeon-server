@@ -1,6 +1,6 @@
-const { UserInputError } = require('apollo-server');
+const { UserInputError } = require("apollo-server");
 
-const { isValidId } = require('../../utils');
+const { isValidId } = require("../../utils");
 
 module.exports = {
   Query: {
@@ -17,7 +17,7 @@ module.exports = {
   }
 };
 
-// ###########################
+// #################################
 
 function todo(_, args, ctx) {
   var { id } = args;
@@ -26,7 +26,7 @@ function todo(_, args, ctx) {
   } = ctx;
 
   if (!isValidId(id)) {
-    throw new UserInputError('Invalid Form Arguments', {
+    throw new UserInputError("Invalid Form Arguments", {
       invalidArgs: Object.keys(args)
     });
   }

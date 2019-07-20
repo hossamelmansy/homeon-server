@@ -1,9 +1,9 @@
-const merge = require('lodash/merge');
+const merge = require("lodash/merge");
 
-const todo = require('./todo');
+const todo = require("./todo");
 
 module.exports = {
-  typeDefs: [todo.typeDefs].join(' '),
+  typeDefs: [todo.typeDefs].join(" "),
   resolvers: merge({}, todo.resolvers),
   context: {
     models: {
