@@ -13,7 +13,9 @@ const UserSchema = new Schema(
 );
 
 UserSchema.statics.isEmailExist = async function(email) {
-  return (await this.countDocuments({ email })) > 0 ? true : false;
+  var count = await this.countDocuments({ email });
+
+  return count > 0 ? true : false;
 };
 
 UserSchema.pre("save", async function(next) {

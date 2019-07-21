@@ -14,10 +14,16 @@ input NewUserInput {
   password: String!
 }
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+
 extend type Query {
   user(id: ID!): User!
 }
 
 extend type Mutation {
   newUser(input: NewUserInput!): User!
+  login(input: LoginInput!): String!
 }

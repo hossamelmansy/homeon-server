@@ -6,7 +6,8 @@ module.exports = {
   isValidId,
   isValidEmail,
   isValidPhone,
-  isValidPassword
+  isValidPassword,
+  isLoggedIn
 };
 
 // ####################################
@@ -43,4 +44,10 @@ function isValidPassword(value = "", options = { error: false }) {
   return error && !valid
     ? throwError(ERRORS.USERINPUT, "Invalid password")
     : valid;
+}
+
+function isLoggedIn(user = null) {
+  if (!user) {
+    throwError(ERRORS.AUTHENTICATION);
+  }
 }
