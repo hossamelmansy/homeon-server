@@ -13,8 +13,11 @@ const server = new ApolloServer({
   context: async function({ req }) {
     var token = req.headers.authorization || "";
     var payload = verifyToken(token);
-    var user = await User.findById(payload.sub).exec();
+    if (!payload) {
+      return merge({ user: null }, context);
+    }
 
+    var user = await User.findById(payload.sub).exec();
     return merge({ user }, context);
   },
   formatError: require("./utils").formatError,

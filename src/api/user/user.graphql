@@ -19,11 +19,11 @@ input LoginInput {
   password: String!
 }
 
-extend type Query {
+type Query {
   user(id: ID!): User!
 }
 
-extend type Mutation {
+type Mutation {
   newUser(input: NewUserInput!): User!
   login(input: LoginInput!): String!
 }

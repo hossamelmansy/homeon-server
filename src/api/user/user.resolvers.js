@@ -30,7 +30,9 @@ function user(_, args, ctx) {
 
   isValidId(id, { error: true });
 
-  return User.findById(id).exec();
+  return User.findById(id)
+    .exec()
+    .lean();
 }
 
 async function newUser(_, args, ctx) {

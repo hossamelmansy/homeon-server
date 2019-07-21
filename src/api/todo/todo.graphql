@@ -28,11 +28,11 @@ input NewTodoInput {
   list: ID!
 }
 
-type Query {
+extend type Query {
   todo(id: ID!): Todo!
   todos: [Todo!]
 }
 
-type Mutation {
+extend type Mutation {
   newTodo(input: NewTodoInput!): Todo!
 }

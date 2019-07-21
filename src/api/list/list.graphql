@@ -1,4 +1,5 @@
 type List {
+  id: ID!
   name: String!
   owner: User!
   createdAt: Date
@@ -9,10 +10,17 @@ input NewListInput {
   name: String!
 }
 
+input RenameListInput {
+  id: ID!
+  name: String!
+}
+
 extend type Query {
   lists: [List!]
 }
 
 extend type Mutation {
   newList(input: NewListInput!): List!
+  removeList(input: ID!): List!
+  renameList(input: RenameListInput!): List!
 }
