@@ -1,0 +1,33 @@
+type User {
+  id: ObjectId!
+  name: String!
+  email: Email!
+  phone: MobilePhone
+  createdAt: DateTime @dateTime
+}
+
+type LoginPayload {
+  token: String!
+}
+
+input NewUserInput {
+  name: String!
+  email: Email!
+  phone: MobilePhone
+  password: String!
+}
+
+input LoginInput {
+  email: Email!
+  password: String!
+}
+
+extend type Query {
+  user(id: ObjectId, email: Email): User @auth(requires: ADMIN)
+  currentUser: User! @auth
+}
+
+extend type Mutation {
+  newUser(input: NewUserInput!): User! @auth(requires: ADMIN)
+  login(input: LoginInput!): LoginPayload
+}

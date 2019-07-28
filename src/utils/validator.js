@@ -1,22 +1,26 @@
-const mongoose = require("mongoose");
+const { ObjectID } = require("mongodb");
 const validator = require("validator");
+const moment = require("moment");
+
 const { ERRORS, throwError } = require("./index");
 
 module.exports = {
   isValidId,
   isValidEmail,
-  isValidPhone,
+  isValidMobilePhone,
   isValidPassword,
-  isLoggedIn
+  isValidDateTime,
 };
 
 // ####################################
 
 function isValidId(value = "", options = { error: false }) {
   var { error = false } = options;
-  var valid = mongoose.Types.ObjectId.isValid(value.trim());
+  var valid = ObjectID.isValid(value.trim());
 
-  return error && !valid ? throwError(ERRORS.USERINPUT, "Invalid id") : valid;
+  return error && !valid
+    ? throwError(ERRORS.CUSTOM, "ObjectId failed validation", "INVALID_ID")
+    : valid;
 }
 
 function isValidEmail(value = "", options = { error: false }) {
@@ -24,16 +28,23 @@ function isValidEmail(value = "", options = { error: false }) {
   var valid = validator.isEmail(value.trim());
 
   return error && !valid
-    ? throwError(ERRORS.USERINPUT, "Invalid email")
+    ? throwError(
+        ERRORS.CUSTOM,
+        "Email address failed validation",
+        "INVALID_EMAIL",
+      )
     : valid;
 }
 
-function isValidPhone(value = "", options = { locale: "ar-EG", error: false }) {
+function isValidMobilePhone(
+  value = "",
+  options = { locale: "ar-EG", error: false },
+) {
   var { locale = "ar-EG", error = false } = options;
   var valid = validator.isMobilePhone(value.trim(), locale);
 
   return error && !valid
-    ? throwError(ERRORS.USERINPUT, "Invalid phone")
+    ? throwError(ERRORS.CUSTOM, "Phone failed validation", "INVALID_PHONE")
     : valid;
 }
 
@@ -42,12 +53,23 @@ function isValidPassword(value = "", options = { error: false }) {
   var valid = !validator.isEmpty(value);
 
   return error && !valid
-    ? throwError(ERRORS.USERINPUT, "Invalid password")
+    ? throwError(
+        ERRORS.CUSTOM,
+        "Password failed validation",
+        "INVALID_PASSWORD",
+      )
     : valid;
 }
 
-function isLoggedIn(user = null) {
-  if (!user) {
-    throwError(ERRORS.AUTHENTICATION);
-  }
+function isValidDateTime(value = "", options = { error: false }) {
+  var { error = false } = options;
+  var valid = moment(value).isValid();
+
+  return error && !valid
+    ? throwError(
+        ERRORS.CUSTOM,
+        "DateTime failed validation",
+        "INVALID_DATETIME",
+      )
+    : valid;
 }

@@ -1,0 +1,25 @@
+type List {
+  id: ObjectId!
+  name: String!
+  owner: User!
+  creatdAt: DateTime @dateTime
+}
+
+input NewListInput {
+  name: String!
+}
+
+input RenameListInput {
+  id: ObjectId!
+  name: String!
+}
+
+extend type Query {
+  lists(limit: Int): [List!] @auth
+}
+
+extend type Mutation {
+  newList(input: NewListInput!): List! @auth
+  removeList(input: ObjectId!): ObjectId @auth
+  renameList(input: RenameListInput!): List @auth
+}

@@ -1,21 +1,20 @@
+type Todo {
+  id: ObjectId!
+  text: String!
+  note: String
+  tags: [String!]
+  priority: Priority
+  dueDate: DateTime @dateTime
+  owner: User!
+  list: List!
+  createdAt: DateTime @dateTime
+}
+
 enum Priority {
   NO
   HIGH
   MEDIUM
   LOW
-}
-
-type Todo {
-  id: ID!
-  text: String!
-  note: String
-  tags: [String!]
-  priority: Priority
-  dueDate: Date
-  owner: User!
-  list: List!
-  createdAt: Date
-  updatedAt: Date
 }
 
 input NewTodoInput {
@@ -24,15 +23,14 @@ input NewTodoInput {
   tags: [String!]
   priority: Priority = NO
   dueDate: Int
-  owner: ID!
-  list: ID!
+  list: ObjectId!
 }
 
 extend type Query {
-  todo(id: ID!): Todo!
-  todos: [Todo!]
+  todo(id: ObjectId!): Todo! @auth
+  todos(limit: Int): [Todo!] @auth
 }
 
 extend type Mutation {
-  newTodo(input: NewTodoInput!): Todo!
+  newTodo(input: NewTodoInput!): Todo! @auth
 }
